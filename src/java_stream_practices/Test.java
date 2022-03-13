@@ -1,3 +1,5 @@
+package java_stream_practices;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -6,13 +8,13 @@ import java.util.stream.Collectors;
 
 public class Test {
 
-    private List<Customer> customers = new ArrayList<Customer>();
-    private List<Product> products = new ArrayList<Product>();
-    private List<Order> orders = new ArrayList<Order>();
+    private final List<Customer> customers = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<>();
 
-    public List<Customer> getCustomers() {
-        return customers;
-    }
+//    public List<Customer> getCustomers() {
+//        return customers;
+//    }
 
     public List<Product> getProducts() {
         return products;
@@ -44,27 +46,27 @@ public class Test {
     }
 
     private void initProducts() {
-        this.products.add(new Product(1l, "Book", "A", 400.12));
-        this.products.add(new Product(2l, "Toy", "B", 300.12));
-        this.products.add(new Product(3l, "Shelf", "C", 200.12));
-        this.products.add(new Product(4l, "TV", "D", 100.12));
-        this.products.add(new Product(5l, "Washing machine", "A", 5.12));
-        this.products.add(new Product(6l, "Minn Car", "B", 1000.12));
-        this.products.add(new Product(7l, "Glass", "C", 900.12));
-        this.products.add(new Product(8l, "Book", "D", 800.12));
-        this.products.add(new Product(9l, "Toy", "A", 700.12));
-        this.products.add(new Product(11l, "Shelf", "B", 600.12));
-        this.products.add(new Product(12l, "TV", "C", 500.12));
-        this.products.add(new Product(13l, "Washing machine", "D", 400.12));
-        this.products.add(new Product(14l, "Minn Car", "A", 300.12));
-        this.products.add(new Product(15l, "Glass", "B", 200.12));
-        this.products.add(new Product(16l, "Book", "C", 100.12));
-        this.products.add(new Product(17l, "Toy", "D", 50.12));
-        this.products.add(new Product(18l, "Shelf", "A", 600.12));
-        this.products.add(new Product(19l, "TV", "B", 500.12));
-        this.products.add(new Product(20l, "Washing machine", "C", 400.12));
-        this.products.add(new Product(21l, "Minn Car", "D", 200.12));
-        this.products.add(new Product(22l, "Glass", "A", 100.12));
+        this.products.add(new Product(1L, "Book", "A", 400.12));
+        this.products.add(new Product(2L, "Toy", "B", 300.12));
+        this.products.add(new Product(3L, "Shelf", "C", 200.12));
+        this.products.add(new Product(4L, "TV", "D", 100.12));
+        this.products.add(new Product(5L, "Washing machine", "A", 5.12));
+        this.products.add(new Product(6L, "Minn Car", "B", 1000.12));
+        this.products.add(new Product(7L, "Glass", "C", 900.12));
+        this.products.add(new Product(8L, "Book", "D", 800.12));
+        this.products.add(new Product(9L, "Toy", "A", 700.12));
+        this.products.add(new Product(11L, "Shelf", "B", 600.12));
+        this.products.add(new Product(12L, "TV", "C", 500.12));
+        this.products.add(new Product(13L, "Washing machine", "D", 400.12));
+        this.products.add(new Product(14L, "Minn Car", "A", 300.12));
+        this.products.add(new Product(15L, "Glass", "B", 200.12));
+        this.products.add(new Product(16L, "Book", "C", 100.12));
+        this.products.add(new Product(17L, "Toy", "D", 50.12));
+        this.products.add(new Product(18L, "Shelf", "A", 600.12));
+        this.products.add(new Product(19L, "TV", "B", 500.12));
+        this.products.add(new Product(20L, "Washing machine", "C", 400.12));
+        this.products.add(new Product(21L, "Minn Car", "D", 200.12));
+        this.products.add(new Product(22L, "Glass", "A", 100.12));
     }
 
     private void initOrders() {
@@ -93,7 +95,7 @@ public class Test {
         }
     }
 
-    public static void main (String[] args) throws ParseException {
+    public static void main (String[] args) {
         System.out.println("START!");
 
         final Test test = new Test();
@@ -142,10 +144,11 @@ public class Test {
 
         //Exercise 5 — Get the cheapest products of “D” category
         System.out.println("Ex. 5");
-        final Double minPriceForD = test.getProducts().parallelStream()
+        final double minPriceForD = test.getProducts().parallelStream()
                 .filter(product -> product.getCategory().equalsIgnoreCase("D"))
                 .min(Comparator.comparing(Product::getPrice))
-                .get().getPrice();
+                .orElse(new Product(Long.MIN_VALUE, "not found", "not found", Double.MIN_VALUE))
+                .getPrice();
         System.out.println("minPriceForD=" + minPriceForD);
 
         //Exercise 6 — Get the 3 most recent placed order
@@ -169,7 +172,7 @@ public class Test {
                     }
                     return false;
                 })
-                .peek(order -> System.out.println(order))
+                .peek(System.out::println)
                 .flatMap(order -> order.getProducts().stream())
                 .distinct()
                 .collect(Collectors.toList());
@@ -177,7 +180,7 @@ public class Test {
 
         //Exercise 8 — Calculate total lump sum of all orders placed after 20-Jab-2022
         System.out.println("Ex. 8");
-        final Double totalAmountOfPlacedOrders = test.getOrders().stream()
+        final double totalAmountOfPlacedOrders = test.getOrders().stream()
                 .filter(order -> {
                     try {
                         return order.getOrderDate().after(new SimpleDateFormat("dd-MM-yyyy").parse("20-01-2022"));
@@ -193,7 +196,7 @@ public class Test {
 
         //Exercise 9 — Calculate order average payment placed on 14-01-2022
         System.out.println("Ex. 9");
-        final Double orderAveragePayment = test.getOrders().parallelStream()
+        final double orderAveragePayment = test.getOrders().parallelStream()
                 .filter(order -> {
                     try {
                         return order.getOrderDate().equals(new SimpleDateFormat("dd-MM-yyyy").parse("14-01-2022"));
@@ -205,7 +208,7 @@ public class Test {
                 .flatMap(order -> order.getProducts().stream())
                 .mapToDouble(Product::getPrice)
                 .average()
-                .getAsDouble();
+                .orElse(Double.MIN_VALUE);
         System.out.println("orderAveragePayment=" + orderAveragePayment);
 
         //Exercise 10 — Obtain a collection of statistic figures (i.e. sum, average, max, min, count) for all products of category “A”
@@ -226,7 +229,7 @@ public class Test {
         System.out.println("Ex. 11");
         Map<Long, Integer> productsInOrderCount = test.getOrders().stream()
                 .collect(Collectors.toMap(
-                        order -> order.getId(),
+                        Order::getId,
                         order -> order.getProducts().size()));
         System.out.println(productsInOrderCount);
 

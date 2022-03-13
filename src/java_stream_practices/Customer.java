@@ -1,9 +1,11 @@
+package java_stream_practices;
+
 public class Customer {
 
-    private Long id;
+    private final Long id;
 
-    private String name;
-    private Integer tier;
+    private final String name;
+    private final Integer tier;
 
     public Customer(Long id, String name, Integer tier) {
         this.id = id;

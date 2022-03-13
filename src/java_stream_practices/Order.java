@@ -1,18 +1,20 @@
+package java_stream_practices;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Order {
-    private Long id;
+    private final Long id;
 
-    private Date orderDate;
-    private Date deliveryDate;
-    private String status;
+    private final Date orderDate;
+    private final Date deliveryDate;
+    private final String status;
 
-    private Customer customer;
+    private final Customer customer;
 
-    Set<Product> products = new HashSet<Product>();
+    Set<Product> products = new HashSet<>();
 
     public Order(Long id, Date orderDate, Date deliveryDate, String status, Customer customer) {
         this.id = id;

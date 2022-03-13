@@ -1,8 +1,10 @@
-public class Product {
-    private Long id;
+package java_stream_practices;
 
-    private String name;
-    private String category;
+public class Product {
+    private final Long id;
+
+    private final String name;
+    private final String category;
     private Double price;
 
     public Product(Long id, String name, String category, Double price) {
